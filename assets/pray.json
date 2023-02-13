@@ -1,0 +1,20 @@
+{
+    "city": "Cairo",
+    "date": "Mon,30 Jan 2023",
+    "today": {
+        "Fajr": "05:17",
+        "Sunrise": "06:46",
+        "Dhuhr": "12:08",
+        "Asr": "15:09",
+        "Maghrib": "17:31",
+        "Isha'a": "18:50"
+    },
+    "tomorrow": {
+        "Fajr": "05:17",
+        "Sunrise": "06:45",
+        "Dhuhr": "12:08",
+        "Asr": "15:09",
+        "Maghrib": "17:32",
+        "Isha'a": "18:51"
+    }
+}
