@@ -2,8 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tz;
+import 'package:quran/components/pray_widget.dart';
 class PrayTimesPage extends StatefulWidget {
   const PrayTimesPage({super.key});
 
@@ -85,190 +84,12 @@ Future<PrayData> fetchData() async {
                        } )
                   ],
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color.fromARGB(40, 0, 40, 0),
-                  ),
-                  
-                  child: Row(
-                   textDirection: TextDirection.rtl,
-                    children: [
-                       Text(snapshot.data!.fajr,
-                      style: const TextStyle(
-                        color: Colors.teal,
-                        fontSize: 30
-                      ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      const Text('الفجر',
-                      style: TextStyle(
-                        color: Colors.teal,
-                        fontSize: 30,
-                      ),
-                      ),
-                     
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                  Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color.fromARGB(40, 0, 40, 0),
-                  ),
-                  
-                  child: Row(
-                   textDirection: TextDirection.rtl,
-                    children: [
-                       Text(snapshot.data!.sunrise,
-                      style: const TextStyle(
-                        color: Colors.teal,
-                        fontSize: 30
-                      ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      const Text('شروق الشمس',
-                      style: TextStyle(
-                        color: Colors.teal,
-                        fontSize: 30,
-                      ),
-                      ),
-                     
-                    ],
-                  ),
-                ),
-            const SizedBox(
-              height: 20,
-            ),
-             Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color.fromARGB(40, 0, 40, 0),
-                  ),
-                  
-                  child: Row(
-                   textDirection: TextDirection.rtl,
-                    children: [
-                       Text(snapshot.data!.dhuhr,
-                      style: const TextStyle(
-                        color: Colors.teal,
-                        fontSize: 30
-                      ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      const Text('الظهر',
-                      style: TextStyle(
-                        color: Colors.teal,
-                        fontSize: 30,
-                      ),
-                      ),
-                     
-                    ],
-                  ),
-                ),
-            const SizedBox(
-              height: 20,
-            ),
-            
-           Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color.fromARGB(40, 0, 40, 0),
-                  ),
-                  
-                  child: Row(
-                   textDirection: TextDirection.rtl,
-                    children: [
-                       Text(snapshot.data!.asr,
-                      style: const TextStyle(
-                        color: Colors.teal,
-                        fontSize: 30
-                      ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      const Text('العصر',
-                      style: TextStyle(
-                        color: Colors.teal,
-                        fontSize: 30,
-                      ),
-                      ),
-                     
-                    ],
-                  ),
-                ),
-        const SizedBox(
-          height: 20,
-         ),
-             Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color.fromARGB(40, 0, 40, 0),
-                  ),
-                  
-                  child: Row(
-                   textDirection: TextDirection.rtl,
-                    children: [
-                       Text(snapshot.data!.maghrib,
-                      style: const TextStyle(
-                        color: Colors.teal,
-                        fontSize: 30
-                      ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      const Text('المغرب',
-                      style: TextStyle(
-                        color: Colors.teal,
-                        fontSize: 30,
-                      ),
-                      ),
-                     
-                    ],
-                  ),
-                ),
-           const SizedBox(
-            height: 20,
-           ) ,
-           Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color.fromARGB(40, 0, 40, 0),
-                  ),
-                  
-                  child: Row(
-                   textDirection: TextDirection.rtl,
-                    children: [
-                       Text(snapshot.data!.ishaa,
-                      style: const TextStyle(
-                        color: Colors.teal,
-                        fontSize: 30
-                      ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      const Text('العشاء',
-                      style: TextStyle(
-                        color: Colors.teal,
-                        fontSize: 30,
-                      ),
-                      ),
-                     
-                    ],
-                  ),
-                ), 
+                prayShape(snapshot,"الفجر",snapshot.data!.fajr),
+                prayShape(snapshot, 'شروق الشمس',snapshot.data!.sunrise),
+                prayShape(snapshot, 'الظهر',snapshot.data!.dhuhr),
+                prayShape(snapshot, 'العصر',snapshot.data!.asr),
+                prayShape(snapshot, 'المغرب',snapshot.data!.maghrib),
+                prayShape(snapshot, 'العشاء',snapshot.data!.ishaa),
               ],
             ),
           );
@@ -276,7 +97,7 @@ Future<PrayData> fetchData() async {
         else if (snapshot.hasError){
           return Text('${snapshot.error}');
         }
-            return  Center(child: const CircularProgressIndicator(),) ;
+            return  const Center(child: CircularProgressIndicator(),) ;
       }
       ),
     );
