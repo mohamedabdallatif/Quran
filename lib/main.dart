@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:quran/constants.dart';
 import 'package:quran/home_page.dart';
+import 'package:quran/qebla_page.dart';
  void main(List<String> args) {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const QuranApp());
 }
 
@@ -30,6 +32,9 @@ return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.teal
       ),
+      routes: {
+        'qebla_page':(context) => const QeblaPage()
+      },
       home: const HomePage(),
       );
   }

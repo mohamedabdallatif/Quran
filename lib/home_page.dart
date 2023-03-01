@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                   TextButton(
                     onPressed: (){
                       Navigator.push(context, 
-                      MaterialPageRoute(builder: (context)=>PrayTimesPage()));
+                      MaterialPageRoute(builder: (context)=>const PrayTimesPage()));
                     },
                     child: Container(
                       padding: const EdgeInsets.only(top: 60),
@@ -108,12 +108,25 @@ class _HomePageState extends State<HomePage> {
               ),
               Row(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Colors.black87,
-                        borderRadius: BorderRadius.circular(10)),
-                    width: 100,
-                    height: 100,
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed('qebla_page');
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: const DecorationImage(
+                          scale: 0.5,
+                          image: AssetImage('assets/images/qebla.png'),
+                          
+                          alignment: Alignment.topCenter
+                        ),
+                          color: Colors.deepOrange,
+                          borderRadius: BorderRadius.circular(10)
+                          ),
+                      width: 100,
+                      height: 100,
+                      
+                    ),
                   ),
                   const SizedBox(
                     width: 100,

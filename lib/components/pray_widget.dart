@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget prayShape(snapshot,String name,type){
+Widget prayShape(String name,type){
  return Column(
   children: [
     Container(
@@ -21,8 +21,8 @@ Widget prayShape(snapshot,String name,type){
                       const SizedBox(
                         width: 20,
                       ),
-                      const Text('الفجر',
-                      style: TextStyle(
+                       Text(name,
+                      style: const TextStyle(
                         color: Colors.teal,
                         fontSize: 30,
                       ),

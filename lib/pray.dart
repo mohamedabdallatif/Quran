@@ -1,7 +1,7 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart';
+import 'package:pray_times/pray_times.dart';
 import 'package:quran/components/pray_widget.dart';
 class PrayTimesPage extends StatefulWidget {
   const PrayTimesPage({super.key});
@@ -10,38 +10,40 @@ class PrayTimesPage extends StatefulWidget {
   @override
   State<PrayTimesPage> createState() => _PrayTimesPageState();
 }
-
+late List<String> prayerTimes;
+late List<String> prayerNames;
 class _PrayTimesPageState extends State<PrayTimesPage> {
-    late Future<PrayData> futureData;
-      var dropdownvalue ='cairo';
+  getMyLocation()async{
+double latitude =await GetLocation().getLocation(1);
+  double longitude =await GetLocation().getLocation(0);
+  double timezone = 2;
+  
+  PrayerTimes prayers =  PrayerTimes();
+  prayers.setTimeFormat(prayers.Time24);
+  prayers.setCalcMethod(prayers.MWL);
+  prayers.setAsrJuristic(prayers.Shafii);
+  prayers.setAdjustHighLats(prayers.AngleBased);
+  var offsets = [0, 0, 0, 0, 0, 0, 0];
+  prayers.tune(offsets);
 
+  final date = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+   prayerTimes =
+  prayers.getPrayerTimes(date, latitude, longitude, timezone);
+  prayerNames = prayers.getTimeNames();
 
-Future<PrayData> fetchData() async {
-  final response = await http
-      .get(Uri.parse('https://dailyprayer.abdulrcs.repl.co/api/'+dropdownvalue));
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return PrayData.fromJson(jsonDecode(response.body));
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load Data');
+  for (int i = 0; i < prayerTimes.length; i++) {
+    print("${prayerNames[i]} - ${prayerTimes[i]}");
   }
 }
-  @override
+@override
   void initState() {
-    futureData=fetchData();
+    checkGPSEnable();
+    checkGPSPermission();
     super.initState();
   }
-  var cities=[
-    'cairo',
-    'alex',
-    'aswan'
-  ];
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -49,90 +51,65 @@ Future<PrayData> fetchData() async {
        , style: TextStyle(
         fontSize: 20
        ),
-              ),
+          ),
       ),
-      body: FutureBuilder(
-      future: futureData,
-      builder: (context,snapshot){
-        if (snapshot.hasData){
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ListView(
-              children: [
-                Row(
-                     textDirection: TextDirection.rtl,
-                  children: [
-                    const Text('اختر المدينة',
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                    ),
-                   const SizedBox(
-                      width: 10,
-                    ),
-                    DropdownButton(
-                      value: dropdownvalue ,
-                      items: cities.map((String cities) {
-                        return DropdownMenuItem(
-                          value: cities,
-                          child: Text(cities));
-                      }).toList(),
-                       onChanged:(String? newVal){
-                        setState(() {
-                          dropdownvalue =newVal!;
-                        });
-                       } )
-                  ],
-                ),
-                prayShape(snapshot,"الفجر",snapshot.data!.fajr),
-                prayShape(snapshot, 'شروق الشمس',snapshot.data!.sunrise),
-                prayShape(snapshot, 'الظهر',snapshot.data!.dhuhr),
-                prayShape(snapshot, 'العصر',snapshot.data!.asr),
-                prayShape(snapshot, 'المغرب',snapshot.data!.maghrib),
-                prayShape(snapshot, 'العشاء',snapshot.data!.ishaa),
-              ],
-            ),
-          );
-        }
-        else if (snapshot.hasError){
-          return Text('${snapshot.error}');
-        }
-            return  const Center(child: CircularProgressIndicator(),) ;
-      }
-      ),
+      body:FutureBuilder (
+        future: getMyLocation(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          return Column(
+            children: [
+          for (int i = 0; i < prayerTimes.length; i++)
+           prayShape(prayerNames[i],prayerTimes[i])
+        ],
+        );
+         },
+        
+      ) 
+      
     );
     
   }
   
 }
-class PrayData {
-  final String fajr;
-  final String sunrise;
-  final String dhuhr;
-  final String asr;
-  final String maghrib; 
-  final String ishaa;
 
+checkGPSEnable()async{
+  bool servicestatus = await Geolocator.isLocationServiceEnabled();
 
-  const PrayData({
-    required this.fajr,
-    required this.sunrise,
-    required this.dhuhr,
-    required this.asr,
-    required this.maghrib,
-    required this.ishaa,
-  });
-
-  factory PrayData.fromJson(Map<String, dynamic> json) {
-    return PrayData(
-      fajr: json['today']['Fajr'],
-      sunrise: json['today']['Sunrise'],
-      dhuhr: json['today']['Dhuhr'],
-      asr: json['today']['Asr'],
-      maghrib: json['today']['Maghrib'],
-      ishaa: json['today']["Isha'a"]
-    );
-  }
+if(servicestatus){
+   print("GPS service is enabled");
+}else{
+   print("GPS service is disabled.");
 }
+}
+checkGPSPermission()async{
+LocationPermission permission = await Geolocator.checkPermission();
 
+if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+        print('Location permissions are denied');
+    }else if(permission == LocationPermission.deniedForever){
+        print("'Location permissions are permanently denied");
+    }else{
+        print("GPS Location service is granted");
+    }
+}else{
+    print("GPS Location permission granted.");
+}
+}
+class GetLocation{
+ 
+  getLocation(m)async{
+  double long=0.0,lat=0.0;
+   var  position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+   long = position.longitude;
+   lat = position.latitude;
+   if(m==0){
+    return long;
+   }
+   else if(m==1){
+    return lat;
+   }
+}
+}
 
