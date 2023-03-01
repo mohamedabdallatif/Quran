@@ -56,6 +56,9 @@ double latitude =await GetLocation().getLocation(1);
       body:FutureBuilder (
         future: getMyLocation(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if(snapshot.connectionState==ConnectionState.waiting){
+            return const Center(child: CircularProgressIndicator());
+          }
           return Column(
             children: [
           for (int i = 0; i < prayerTimes.length; i++)
