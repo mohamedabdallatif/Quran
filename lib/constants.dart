@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:quran/pray.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String arabicFont='Quran';
@@ -22,21 +23,48 @@ Future saveSettings() async{
   final prefc= await SharedPreferences.getInstance();
   await prefc.setDouble('arabicFontSize', arabicFontSize);
   await prefc.setDouble('mushafFontSize', mushafFontSize);
-  await prefc.setBool('view', view);
 }
-
 Future getSettings() async{
   try{
      final prefc= await SharedPreferences.getInstance();
      arabicFontSize=(prefc.getDouble('arabicFontSize'))!;
      mushafFontSize=(prefc.getDouble('mushafFontSize'))!;
-     view = prefc.getBool('view')!;
   } catch(_){
    arabicFontSize=28.0;
    mushafFontSize=40.0;
-   view=false;
   }
 }
+
+Future saveView() async{
+  final prefc= await SharedPreferences.getInstance();
+  await prefc.setBool('view', view);
+}
+Future getView() async{
+  try{
+     final prefc= await SharedPreferences.getInstance();
+     view=(prefc.getBool('view'))!;
+  } catch(_){
+    view=true;
+  }
+}
+
+Future saveLocation() async{
+  final prefc= await SharedPreferences.getInstance();
+ // await prefc.setDouble('longitude', );
+ // await prefc.setDouble('latitude', getLocation()[1]);
+}
+
+Future getLocation() async{
+  try{
+     final prefc= await SharedPreferences.getInstance();
+   //  GetLocation().getLocation()[0]=prefc.getDouble('longitude');
+   //  GetLocation().getLocation()[0]=prefc.getDouble('latitude');
+  } catch(_){
+    view=true;
+  }
+}
+
+
 
 Future saveBookMark (sura,ayah)async{
     final prefc=await SharedPreferences.getInstance();

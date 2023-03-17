@@ -183,9 +183,12 @@ class _SuraBuilderState extends State<SuraBuilder> {
                 Icons.chrome_reader_mode,
                 color: Colors.white,
               ) ,
-              onPressed:()=> setState(() {
+              onPressed:() {
+                setState(() {
                 view=!view;
-              })
+                saveView();
+              });
+              }
             ),
           ),
           centerTitle: true,

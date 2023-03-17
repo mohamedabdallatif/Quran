@@ -21,6 +21,7 @@ class _QuranAppState extends State<QuranApp> {
     WidgetsBinding.instance.addPostFrameCallback((_) async{ 
       await readjson();
       await getSettings();
+      await getView();
     });
     super.initState();
   }
@@ -35,6 +36,8 @@ return MaterialApp(
       routes: {
         'qebla_page':(context) => const QeblaPage()
       },
+      
+     
       home: const HomePage(),
       );
   }
