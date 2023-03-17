@@ -50,18 +50,14 @@ Future getView() async{
 
 Future saveLocation() async{
   final prefc= await SharedPreferences.getInstance();
- // await prefc.setDouble('longitude', );
- // await prefc.setDouble('latitude', getLocation()[1]);
+  await prefc.setDouble('longitude',longitude);
+  await prefc.setDouble('latitude', latitude);
 }
 
 Future getLocation() async{
-  try{
      final prefc= await SharedPreferences.getInstance();
-   //  GetLocation().getLocation()[0]=prefc.getDouble('longitude');
-   //  GetLocation().getLocation()[0]=prefc.getDouble('latitude');
-  } catch(_){
-    view=true;
-  }
+     longitude = prefc.getDouble('longitude')!;
+     latitude = prefc.getDouble('latitude')!;
 }
 
 

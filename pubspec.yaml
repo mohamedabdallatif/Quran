@@ -48,8 +48,8 @@ dependencies:
   geolocator: ^9.0.2
   flutter_qiblah: ^2.1.0
   intl: ^0.18.0
-
-  
+  flutter_svg: ^2.0.4
+    
 flutter_icons:
   android: true
   ios: true
@@ -86,6 +86,7 @@ flutter:
         - assets/images/quran.png
         - assets/hafs_smart_v8.json
         - assets/images/
+        - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

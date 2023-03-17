@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:quran/constants.dart';
 import 'package:quran/home_page.dart';
-import 'package:quran/qebla_page.dart';
+import 'package:quran/qibla_page.dart';
+import 'package:quran/qiblah_compass.dart';
  void main(List<String> args) {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const QuranApp());
@@ -33,9 +34,9 @@ return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.teal
       ),
-      routes: {
-        'qebla_page':(context) => const QeblaPage()
-      },
+     routes: {
+      'qebla_page':(context) => const QiblaPage()
+     },
       
      
       home: const HomePage(),

@@ -42,6 +42,7 @@ class _PrayTimesPageState extends State<PrayTimesPage> {
           future: getMyLocation(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if(snapshot.connectionState==ConnectionState.waiting){
+              
               return const Center(child: CircularProgressIndicator());
             }
             return Column(
